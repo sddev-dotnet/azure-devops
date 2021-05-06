@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "devops-agent.fullname" . }}-deployment
+  labels:
+    app.kubernetes.io/name: {{ include "devops-agent.name" . }}
+    helm.sh/chart: {{ include "devops-agent.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ $.Values.replicaCount}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "devops-agent.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "devops-agent.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: devops-agent
+        image: "{{$.Values.image.repository}}/{{$.Values.image.imageName}}:{{$.Values.image.tag}}"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 128Mi
+          limits:
+            cpu: 1.25
+            memory: 2Gi
+        volumeMounts:
+          - mountPath: /var/run/docker.sock
+            name: docker-socket
+        env: 
+        - name: AZP_URL
+          value: {{ $.Values.devopsUrl }}
+        - name: AZP_TOKEN
+          value: {{ $.Values.devopsToken }}
+        - name: AZP_POOL
+          value: {{ $.Values.devopsPool }}
+        - name: AZP_WORK
+          value: /wd
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+       
+ 
