@@ -52,13 +52,10 @@ RUN yum install libunwind icu -y
 RUN export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
 
 #During os upgrade identify the icu version with yum info icu and update the icu version
-RUN export CLR_ICU_VERSION_OVERRIDE="71.1"; dotnet tool install --global dotnet-sonarscanner --version 4.8.0
+RUN export CLR_ICU_VERSION_OVERRIDE="71.1"; dotnet tool install --global dotnet-sonarscanner --version 5.9.0
 
 # Install Helm 
-
-ENV HELM_VERSION="v2.14.0"
-RUN wget https://get.helm.sh/helm-v2.14.0-linux-amd64.tar.gz && tar -xvf helm-v2.14.0-linux-amd64.tar.gz
-RUN mv linux-amd64/helm /usr/bin/
+RUN dnf install helm
 
 RUN yum install -y wget \
     && wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
