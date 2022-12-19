@@ -67,7 +67,14 @@ RUN yum install -y wget \
 
 RUN export CHROME_BIN=/usr/bin/google-chrome
 
+RUN dnf install hostname -y
+
 WORKDIR /azp
+
+WORKDIR /azp
+ENV AZP_AGENT_USE_LEGACY_HTTP true
+ENV CLR_ICU_VERSION_OVERRIDE 71.1
+
 COPY ./start.sh .
 RUN chmod +x start.sh
 
