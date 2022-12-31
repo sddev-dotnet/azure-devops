@@ -55,7 +55,7 @@ RUN export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
 RUN export CLR_ICU_VERSION_OVERRIDE="71.1"; dotnet tool install --global dotnet-sonarscanner --version 5.9.0
 
 # Install Helm 
-RUN dnf install helm
+RUN dnf install helm -y
 
 RUN yum install -y wget \
     && wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
