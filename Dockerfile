@@ -1,25 +1,22 @@
 FROM quay.io/podman/stable:v4.3.1
 
-RUN yum update \
-&& yum install -y  \
+RUN yum update -y && yum upgrade -y
+
+RUN yum install -y \
         ca-certificates \
         curl \
         jq \
         git \
         iputils \
         curl-devel \
-        # libicu60 \
         libunwind \
-        netcat 
-
-RUN yum install -y \
+        netcat \
         apt-transport-https \
         zlib-devel \
         java-11-openjdk \
+        libksba \
         zip \
         unzip 
-        #gpg-agent \
-        #software-properties-common 
 
 RUN yum install wget -y
 
@@ -27,6 +24,7 @@ RUN yum install wget -y
 RUN wget https://packages.microsoft.com/config/fedora/36/packages-microsoft-prod.rpm -O packages-microsoft-prod.rpm
 RUN rpm -ivh packages-microsoft-prod.rpm
 RUN yum install  dotnet-sdk-3.1 -y 
+RUN dnf install dotnet-sdk-7.0 -y
 
 
 RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc
